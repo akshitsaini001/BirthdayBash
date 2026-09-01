@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Kashish 🎉</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;600;700;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
+
+<style>
+/* =====================================================================
+   TOKENS & BASE
+   ===================================================================== */
+:root{
+  --bg-base:       #fff6df;
+  --blob-pink:     #ff5f9e;
+  --blob-turq:     #22c3b6;
+  --blob-purple:   #8f7dfb;
+  --blob-yellow:   #ffc93c;
+  --blob-orange:   #ff8b4d;
+  --cognizant-blue:#0033a0;
+  --ink:           #33223f;
+  --ink-soft:      #7a6a86;
+  --white:         #fffdf9;
+  --frosting:      #ff8fb8;
+  --sponge:        #ffcf6b;
+  --plate:         rgba(51,34,63,.12);
+  --tape:          rgba(255, 238, 187, 0.85);
+
+  --font-display: 'Baloo 2', sans-serif;
+  --font-hand:    'Caveat', cursive;
+  --font-body:    'Nunito', sans-serif;
+}
+
+*{margin:0; padding:0; box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  min-height:100vh;
+  font-family:var(--font-body);
+  color:var(--ink);
+  background:var(--bg-base);
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* Background Elements */
+.blob-field{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none;}
+.blob{position:absolute; border-radius:42% 58% 63% 37% / 41% 44% 56% 59%; filter:blur(2px); opacity:.35;}
+.blob.b1{width:340px; height:340px; background:var(--blob-turq); top:-90px; left:-110px; animation:driftA 16s ease-in-out infinite;}
+.blob.b2{width:280px; height:280px; background:var(--blob-pink); bottom:-80px; right:-90px; animation:driftB 19s ease-in-out infinite;}
+.blob.b3{width:220px; height:220px; background:var(--blob-yellow); top:38%; right:-100px; animation:driftA 14s ease-in-out infinite reverse;}
+.blob.b4{width:200px; height:200px; background:var(--blob-purple); bottom:10%; left:-90px; animation:driftB 21s ease-in-out infinite;}
+@keyframes driftA{0%,100%{transform:translate(0,0) rotate(0deg);} 50%{transform:translate(22px,-18px) rotate(8deg);}}
+@keyframes driftB{0%,100%{transform:translate(0,0) rotate(0deg);} 50%{transform:translate(-18px,20px) rotate(-6deg);}}
+
+.stars-field{position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none;}
+.star{position:absolute; color:var(--blob-yellow); font-size:12px; opacity:0; animation:twinkle 3.4s ease-in-out infinite;}
+@keyframes twinkle{0%,100%{opacity:0;} 50%{opacity:.85;}}
+
+/* Floating Music Control */
+.music-btn{
+  position:fixed; bottom:20px; right:20px; z-index:50;
+  width:52px; height:52px; border-radius:50%;
+  background:var(--white); border:2px solid var(--ink);
+  font-size:21px; cursor:pointer;
+  box-shadow:0 8px 20px -6px rgba(51,34,63,.4);
+  display:flex; align-items:center; justify-content:center;
+  transition:transform .2s ease;
+}
+.music-btn:hover{transform:scale(1.08);}
+.music-btn:focus-visible{outline:3px solid var(--blob-purple); outline-offset:3px;}
+.music-btn.playing{animation:pulseBtn 1.6s ease-in-out infinite;}
+@keyframes pulseBtn{0%,100%{box-shadow:0 8px 20px -6px rgba(51,34,63,.4);} 50%{box-shadow:0 8px 26px -4px rgba(255,95,158,.55);}}
+
+.yt-wrap{position:fixed; width:1px; height:1px; bottom:0; left:0; opacity:0; pointer-events:none; overflow:hidden;}
+.yt-wrap iframe{width:100%; height:100%; border:0;}
+
+/* Main Scene Layout */
+.scene{
+  position:relative; z-index:1; min-height:100vh;
+  display:flex; flex-direction:column; align-items:center;
+  padding:64px 20px 100px; text-align:center;
+}
+.eyebrow{
+  font-family:var(--font-body); font-weight:700; font-size:15px;
+  color:var(--ink-soft); margin-bottom:6px; letter-spacing:1px; text-transform:uppercase;
+}
+.wish-line{
+  font-family:var(--font-display); font-weight:700; font-size:clamp(24px,5.5vw,34px);
+  color:var(--ink); margin-bottom:38px;
+}
+.wish-line .name{color:var(--blob-pink);}
+
+/* Cake & Candle */
+.cake-wrap{position:relative; margin-bottom:18px;}
+.plate{
+  width:210px; height:26px; border-radius:50%;
+  background:var(--plate); margin:0 auto; filter:blur(1px);
+}
+.cake{position:relative; width:210px; margin:-14px auto 0;}
+.tier{border-radius:16px; position:relative; box-shadow:0 8px 0 rgba(51,34,63,.08) inset;}
+.tier.bottom{width:210px; height:64px; background:var(--frosting);}
+.tier.top{width:150px; height:52px; background:var(--sponge); margin:0 auto; margin-top:-14px; border-radius:14px;}
+.drip{
+  position:absolute; top:-10px; left:0; width:100%; height:18px;
+  background-image:radial-gradient(circle at 10px 10px, var(--frosting) 9px, transparent 10px);
+  background-size:20px 20px; background-repeat:repeat-x;
+}
+.tier.top .drip{background-image:radial-gradient(circle at 8px 8px, var(--sponge) 7px, transparent 8px); background-size:16px 16px;}
+
+.candle-btn{
+  position:absolute; top:-56px; left:50%; transform:translateX(-50%);
+  background:none; border:none; cursor:pointer; padding:14px 20px;
+  display:flex; flex-direction:column; align-items:center;
+}
+.candle-btn:focus-visible{outline:3px solid var(--blob-purple); outline-offset:4px; border-radius:10px;}
+.candle-stick{display:block; width:8px; height:34px; background:linear-gradient(180deg,#fff,#ffe6a8); border-radius:3px; margin:0 auto;}
+.flame{
+  display:block; width:14px; height:20px; margin:0 auto 2px;
+  background:radial-gradient(circle at 50% 65%, #fff3b0 0%, #ffb648 55%, #ff7a3d 100%);
+  border-radius:50% 50% 50% 50% / 65% 65% 35% 35%;
+  transform-origin:bottom center;
+  animation:flicker 1.4s ease-in-out infinite;
+}
+@keyframes flicker{
+  0%,100%{transform:scaleY(1) rotate(-1deg);}
+  50%{transform:scaleY(1.12) rotate(2deg);}
+}
+.smoke{
+  display:block; position:absolute; top:-18px; left:50%; width:6px; height:6px; border-radius:50%;
+  background:rgba(120,110,130,.5); opacity:0; transform:translateX(-50%);
+}
+.candle-btn.blown .flame{animation:none; opacity:0; transform:scaleY(.2); transition:all .2s;}
+.candle-btn.blown .smoke{animation:smokeRise 1.1s ease-out forwards;}
+@keyframes smokeRise{
+  0%{opacity:.6; transform:translate(-50%,0) scale(1);}
+  100%{opacity:0; transform:translate(-50%,-30px) scale(2.6);}
+}
+.candle-hint{
+  font-family:var(--font-body); font-weight:600; font-size:13px; color:var(--ink-soft);
+  margin-top:4px; transition:opacity .4s ease;
+}
+.candle-hint.hide{display:none;}
+
+/* Reveal Block */
+.reveal-block{
+  opacity:0; transform:translateY(18px);
+  max-height:0; overflow:hidden;
+  transition:opacity .7s ease, transform .7s ease;
+  width:100%;
+}
+.reveal-block.show{
+  opacity:1; transform:translateY(0); max-height:8000px; margin-top:30px;
+}
+
+.headline{
+  font-family:var(--font-display); font-weight:800;
+  font-size:clamp(34px,9vw,52px); line-height:1.05; color:var(--ink);
+  margin-bottom:6px;
+  animation:bounceIn .8s cubic-bezier(.34,1.56,.64,1) both;
+}
+@keyframes bounceIn{
+  0%{opacity:0; transform:scale(.6);}
+  60%{opacity:1; transform:scale(1.08);}
+  100%{opacity:1; transform:scale(1);}
+}
+.headline .accent{color:var(--blob-pink);}
+.subline{
+  font-family:var(--font-body); font-weight:600; font-size:15px; color:var(--ink-soft);
+  margin-bottom:34px;
+}
+
+/* 3D Gift Boxes */
+.gift-row{
+  display:flex; justify-content:center; gap:20px; flex-wrap:wrap;
+  max-width:440px; margin:0 auto 14px;
+}
+.gift-btn{
+  background:none; border:none; cursor:pointer; padding:10px;
+  position:relative; width:78px; height:108px; perspective:500px;
+}
+.gift-btn:focus-visible{outline:3px solid var(--ink); outline-offset:3px; border-radius:10px;}
+.gift-btn::before{
+  content:''; position:absolute; inset:16px 8px 22px; border-radius:14px;
+  animation:inviteRing 2.6s ease-out infinite;
+}
+.gift-btn:nth-child(2)::before{animation-delay:.5s;}
+.gift-btn:nth-child(3)::before{animation-delay:1s;}
+.gift-btn:nth-child(4)::before{animation-delay:1.5s;}
+@keyframes inviteRing{
+  0%{box-shadow:0 0 0 0 rgba(255,95,158,.35);}
+  70%{box-shadow:0 0 0 10px rgba(255,95,158,0);}
+  100%{box-shadow:0 0 0 0 rgba(255,95,158,0);}
+}
+
+.gift-box{position:relative; width:100%; height:100%; transform-style:preserve-3d;}
+.gift-base{
+  position:absolute; bottom:6px; left:0; width:100%; height:62px; border-radius:8px;
+  box-shadow:inset -6px -8px 12px rgba(0,0,0,.12), inset 6px 6px 8px rgba(255,255,255,.25);
+}
+.gift-ribbon-v{position:absolute; bottom:6px; left:50%; width:14px; height:62px; transform:translateX(-50%); background:rgba(255,255,255,.55); border-radius:2px;}
+.gift-lid{
+  position:absolute; bottom:66px; left:-4px; width:calc(100% + 8px); height:22px; border-radius:6px;
+  transform-origin:bottom center;
+  transition:transform .5s cubic-bezier(.34,1.56,.64,1), opacity .4s ease .1s;
+  box-shadow:inset -4px -4px 8px rgba(0,0,0,.12), inset 4px 4px 6px rgba(255,255,255,.3);
+}
+.gift-bow{position:absolute; bottom:100%; left:50%; transform:translateX(-50%); font-size:19px; margin-bottom:-2px;}
+
+.gift-btn[data-color="pink"] .gift-base, .gift-btn[data-color="pink"] .gift-lid{background:var(--blob-pink);}
+.gift-btn[data-color="blue"] .gift-base, .gift-btn[data-color="blue"] .gift-lid{background:var(--cognizant-blue);}
+.gift-btn[data-color="purple"] .gift-base, .gift-btn[data-color="purple"] .gift-lid{background:var(--blob-purple);}
+.gift-btn[data-color="yellow"] .gift-base, .gift-btn[data-color="yellow"] .gift-lid{background:var(--blob-yellow);}
+
+.gift-btn.opened{pointer-events:none;}
+.gift-btn.opened::before{animation:none; box-shadow:none;}
+.gift-btn.opened .gift-lid{transform:rotateX(-125deg) translateY(-6px); opacity:0;}
+.gift-btn.opened .gift-box{animation:giftPop .4s ease;}
+@keyframes giftPop{0%{transform:scale(1);} 45%{transform:scale(1.12) rotate(-2deg);} 100%{transform:scale(1);}}
+.gift-btn.opened .gift-base::after{
+  content:'✨'; position:absolute; top:-16px; left:50%; transform:translate(-50%,0);
+  font-size:20px; opacity:0; animation:sparklePop .5s ease-out forwards;
+}
+@keyframes sparklePop{0%{opacity:0; transform:translate(-50%,0) scale(.3);} 40%{opacity:1; transform:translate(-50%,-12px) scale(1.2);} 100%{opacity:0; transform:translate(-50%,-20px) scale(.9);}}
+
+.gift-hint{
+  font-family:var(--font-body); font-weight:700; font-size:14px; color:var(--ink-soft);
+  margin-bottom:26px; transition:opacity .4s ease;
+}
+
+.notes{
+  display:flex; flex-direction:column; gap:10px; max-width:400px; width:100%; margin:0 auto;
+}
+.note-line{
+  font-family:var(--font-body); font-weight:700; font-size:15px; color:var(--ink);
+  background:var(--white); border-radius:14px; padding:12px 18px;
+  box-shadow:0 6px 16px -8px rgba(51,34,63,.25);
+  opacity:0; transform:translateY(10px) scale(.96);
+  animation:notePop .45s cubic-bezier(.34,1.56,.64,1) forwards;
+  text-align:left;
+}
+@keyframes notePop{to{opacity:1; transform:translateY(0) scale(1);}}
+
+/* =====================================================================
+   UPGRADED RESPONSIVE PHOTO GALLERY
+   ===================================================================== */
+.gallery{
+  margin-top:45px; width:100%; max-width:860px;
+}
+.gallery-heading{
+  font-family:var(--font-display); font-weight:800; font-size:clamp(22px, 4vw, 30px);
+  color:var(--ink); margin-bottom:6px;
+}
+.gallery-sub{
+  font-size:14px; color:var(--ink-soft); font-weight:600; margin-bottom:28px;
+}
+
+/* Fluid responsive grid: 1 col on mobile, 2 col on tablet, 4 col on desktop */
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+  gap:28px 20px;
+  padding:12px;
+  margin:0 auto;
+  justify-content:center;
+}
+
+.polaroid{
+  background:var(--white);
+  padding:12px 12px 18px;
+  border-radius:8px;
+  box-shadow:0 12px 28px -10px rgba(51,34,63,.3), 0 4px 8px rgba(51,34,63,.06);
+  cursor:pointer;
+  position:relative;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s ease;
+  outline:none;
+}
+.polaroid:nth-child(1){transform:rotate(-3deg);}
+.polaroid:nth-child(2){transform:rotate(3deg);}
+.polaroid:nth-child(3){transform:rotate(-2.5deg);}
+.polaroid:nth-child(4){transform:rotate(2.5deg);}
+
+.polaroid:hover, .polaroid:focus-visible{
+  transform:scale(1.06) rotate(0deg) !important;
+  box-shadow:0 22px 40px -12px rgba(51,34,63,.42);
+  z-index:10;
+}
+.polaroid:focus-visible{outline:3px solid var(--blob-purple); outline-offset:4px;}
+
+/* Washi tape topper */
+.polaroid-tape{
+  position:absolute; top:-10px; left:50%; transform:translateX(-50%);
+  width:58px; height:20px; background:var(--tape);
+  box-shadow:0 1px 3px rgba(0,0,0,0.06); border-radius:2px;
+}
+.polaroid-img-box{
+  width:100%; aspect-ratio:1/1; border-radius:4px; overflow:hidden;
+  background:#f4ebe1; position:relative;
+}
+.polaroid img{
+  width:100%; height:100%; object-fit:cover; display:block;
+  transition:transform 0.4s ease;
+}
+.polaroid:hover img{transform:scale(1.06);}
+
+.polaroid-caption{
+  font-family:var(--font-hand); font-weight:700; font-size:20px;
+  color:var(--ink); text-align:center; margin-top:10px; line-height:1.2;
+}
+
+/* =====================================================================
+   FULL-SCREEN LIGHTBOX MODAL
+   ===================================================================== */
+.lightbox-modal{
+  position:fixed; inset:0; z-index:999;
+  background:rgba(43, 24, 54, 0.88);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:20px;
+  opacity:0; visibility:hidden; pointer-events:none;
+  transition:opacity .35s ease, visibility .35s ease;
+}
+.lightbox-modal.active{
+  opacity:1; visibility:visible; pointer-events:auto;
+}
+
+.lightbox-content{
+  position:relative; max-width:90vw; max-height:85vh;
+  display:flex; flex-direction:column; align-items:center;
+  animation:modalScale .35s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes modalScale{
+  from{transform:scale(0.85); opacity:0;}
+  to{transform:scale(1); opacity:1;}
+}
+
+.lightbox-img-wrap{
+  background:var(--white); padding:14px 14px 22px; border-radius:12px;
+  box-shadow:0 30px 60px rgba(0,0,0,0.5);
+  max-width:540px; width:100%; text-align:center;
+}
+.lightbox-img{
+  width:100%; max-height:60vh; object-fit:contain;
+  border-radius:6px; background:#111; display:block;
+}
+.lightbox-caption{
+  font-family:var(--font-hand); font-size:26px; font-weight:700;
+  color:var(--ink); margin-top:14px;
+}
+
+/* Close & Nav Buttons */
+.lightbox-btn{
+  position:absolute; background:var(--white); border:2px solid var(--ink);
+  color:var(--ink); width:46px; height:46px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:22px; font-weight:bold;
+  box-shadow:0 8px 20px rgba(0,0,0,0.25);
+  transition:transform .2s ease, background .2s ease;
+  z-index:1001;
+}
+.lightbox-btn:hover{transform:scale(1.1); background:var(--ink); color:var(--white);}
+.lightbox-close{top:18px; right:18px;}
+.lightbox-prev{left:20px; top:50%; transform:translateY(-50%);}
+.lightbox-next{right:20px; top:50%; transform:translateY(-50%);}
+
+/* =====================================================================
+   FINAL CARD
+   ===================================================================== */
+.final-card{
+  margin-top:40px; max-width:540px; width:100%;
+  background:var(--white); border-radius:26px; padding:34px 30px 30px;
+  box-shadow:0 24px 50px -20px rgba(51,34,63,.35);
+  position:relative;
+}
+.final-card::before{
+  content:'🎉'; position:absolute; top:-22px; right:22px; font-size:30px;
+  transform:rotate(10deg);
+}
+.final-heading{
+  font-family:var(--font-display); font-weight:700; font-size:24px;
+  color:var(--blob-pink); margin-bottom:14px;
+}
+.final-body{
+  font-family:var(--font-body); font-weight:600; font-size:15.5px; line-height:1.75; color:var(--ink);
+  text-align:left;
+}
+.final-highlight{color:var(--cognizant-blue); font-weight:800;}
+.final-sign{
+  font-family:var(--font-display); font-weight:700; font-size:19px; color:var(--ink);
+  margin-top:18px; text-align:right;
+}
+
+.replay-btn{
+  margin-top:30px; font-family:var(--font-body); font-weight:700; font-size:14px;
+  color:var(--ink); background:var(--white); border:2px solid var(--ink);
+  padding:12px 28px; border-radius:40px; cursor:pointer;
+  transition:transform .2s ease, background .2s ease, color .2s ease;
+}
+.replay-btn:hover{background:var(--ink); color:var(--white); transform:translateY(-2px);}
+.replay-btn:focus-visible{outline:3px solid var(--blob-purple); outline-offset:3px;}
+
+/* Responsive adjustments */
+@media (max-width:600px){
+  .gallery-grid{grid-template-columns:repeat(2, 1fr); gap:16px 12px; padding:4px;}
+  .polaroid{padding:8px 8px 14px;}
+  .polaroid-caption{font-size:16px; margin-top:6px;}
+  .lightbox-prev{left:10px;}
+  .lightbox-next{right:10px;}
+}
+@media (max-width:400px){
+  .gift-row{gap:10px;}
+  .gift-btn{width:64px; height:90px;}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .blob,.star,.flame,.gift-btn,.gift-btn::before,.headline,.music-btn.playing{animation:none !important;}
+  .reveal-block{transition:none;}
+  .note-line{animation:none; opacity:1; transform:none;}
+  .polaroid{transition:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="blob-field" aria-hidden="true">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+</div>
+<div class="stars-field" id="starsField" aria-hidden="true"></div>
+
+<button class="music-btn" id="musicBtn" title="Play birthday music" aria-label="Play music">🔊</button>
+<div class="yt-wrap" id="ytWrap"></div>
+
+<main class="scene">
+  <p class="eyebrow">a little celebration for</p>
+  <p class="wish-line"><span class="name">Kashish</span> — make a wish</p>
+
+  <div class="cake-wrap">
+    <button class="candle-btn" id="candleBtn" aria-label="Blow out the candle">
+      <span class="flame" id="flame"></span>
+      <span class="smoke" id="smoke"></span>
+      <span class="candle-stick"></span>
+    </button>
+    <div class="cake">
+      <div class="tier top"><div class="drip"></div></div>
+      <div class="tier bottom"><div class="drip"></div></div>
+    </div>
+    <div class="plate"></div>
+  </div>
+  <p class="candle-hint" id="candleHint">tap the flame to blow out the candle 🕯️</p>
+
+  <div class="reveal-block" id="revealBlock">
+    <h1 class="headline">Happy Birthday,<br><span class="accent">Kashish!</span></h1>
+    <p class="subline">open every gift to unwrap the wishes & memories</p>
+
+    <div class="gift-row" id="giftRow">
+      <button class="gift-btn" data-color="blue" data-msg="💼 Huge Congratulations on Cognizant! So proud of you crushing your goals! 🚀">
+        <span class="gift-box">
+          <span class="gift-base"></span>
+          <span class="gift-ribbon-v"></span>
+          <span class="gift-lid"></span>
+          <span class="gift-bow">🎀</span>
+        </span>
+      </button>
+      <button class="gift-btn" data-color="pink" data-msg="✨ Another year of being completely unstoppable, bright, and fun!">
+        <span class="gift-box">
+          <span class="gift-base"></span>
+          <span class="gift-ribbon-v"></span>
+          <span class="gift-lid"></span>
+          <span class="gift-bow">🎀</span>
+        </span>
+      </button>
+      <button class="gift-btn" data-color="purple" data-msg="💜 You bring positive energy and good laughs wherever you go.">
+        <span class="gift-box">
+          <span class="gift-base"></span>
+          <span class="gift-ribbon-v"></span>
+          <span class="gift-lid"></span>
+          <span class="gift-bow">🎀</span>
+        </span>
+      </button>
+      <button class="gift-btn" data-color="yellow" data-msg="🎂 Here's to endless coffee breaks, corporate wins, and happiness!">
+        <span class="gift-box">
+          <span class="gift-base"></span>
+          <span class="gift-ribbon-v"></span>
+          <span class="gift-lid"></span>
+          <span class="gift-bow">🎀</span>
+        </span>
+      </button>
+    </div>
+    <p class="gift-hint" id="giftHint">4 gifts left to open</p>
+
+    <div class="notes" id="notes"></div>
+
+    <div class="final-card" id="finalCard" style="display:none;">
+      <h2 class="final-heading">Happy Birthday & Congrats! 🎉💼</h2>
+      <p class="final-body">
+        Happy Birthday Kashish! Celebrating you is double special this time with your exciting journey beginning at <span class="final-highlight">Cognizant</span>! 
+        <br><br>
+        May this year bring thriving success, career milestones, great health, and unforgettable moments. Thank you for being such an inspiring person.
+      </p>
+      <p class="final-sign">So proud of you 💛</p>
+
+      <section class="gallery">
+        <h3 class="gallery-heading">Memories & Milestones 📸</h3>
+        <p class="gallery-sub">tap any photo to view full screen</p>
+
+        <div class="gallery-grid" id="galleryGrid">
+          <figure class="polaroid" tabindex="0" data-index="0">
+            <div class="polaroid-tape"></div>
+            <div class="polaroid-img-box">
+              <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&auto=format&fit=crop&q=80" alt="Cognizant Ready">
+            </div>
+            <figcaption class="polaroid-caption">Cognizant Ready 💼</figcaption>
+          </figure>
+
+          <figure class="polaroid" tabindex="0" data-index="1">
+            <div class="polaroid-tape"></div>
+            <div class="polaroid-img-box">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&auto=format&fit=crop&q=80" alt="Best Smile">
+            </div>
+            <figcaption class="polaroid-caption">Best Smile 🌸</figcaption>
+          </figure>
+
+          <figure class="polaroid" tabindex="0" data-index="2">
+            <div class="polaroid-tape"></div>
+            <div class="polaroid-img-box">
+              <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&auto=format&fit=crop&q=80" alt="Pure Vibes">
+            </div>
+            <figcaption class="polaroid-caption">Pure Vibes ✨</figcaption>
+          </figure>
+
+          <figure class="polaroid" tabindex="0" data-index="3">
+            <div class="polaroid-tape"></div>
+            <div class="polaroid-img-box">
+              <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&auto=format&fit=crop&q=80" alt="Forever Iconic">
+            </div>
+            <figcaption class="polaroid-caption">Forever Iconic 💖</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <button class="replay-btn" id="replayBtn">Replay Celebration</button>
+    </div>
+  </div>
+</main>
+
+<div class="lightbox-modal" id="lightboxModal" role="dialog" aria-modal="true">
+  <button class="lightbox-btn lightbox-close" id="lightboxClose" aria-label="Close image">✕</button>
+  <button class="lightbox-btn lightbox-prev" id="lightboxPrev" aria-label="Previous image">‹</button>
+  <button class="lightbox-btn lightbox-next" id="lightboxNext" aria-label="Next image">›</button>
+  
+  <div class="lightbox-content">
+    <div class="lightbox-img-wrap">
+      <img src="" alt="Full Screen Memory" class="lightbox-img" id="lightboxImg">
+      <p class="lightbox-caption" id="lightboxCaption"></p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+<script>
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const YOUTUBE_VIDEO_ID = "wkTMatDWSK0"; // Starts at 31s
+
+/* Twinkling Stars */
+(function buildStars(){
+  const field = document.getElementById('starsField');
+  for (let i = 0; i < 14; i++) {
+    const s = document.createElement('span');
+    s.className = 'star';
+    s.textContent = '✦';
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.top = Math.random() * 100 + 'vh';
+    s.style.fontSize = (8 + Math.random() * 10) + 'px';
+    s.style.animationDelay = (Math.random() * 3.4) + 's';
+    field.appendChild(s);
+  }
+})();
+
+function confettiAt(el, opts = {}) {
+  if (!window.confetti || reduceMotion) return;
+  const r = el.getBoundingClientRect();
+  const x = (r.left + r.width / 2) / window.innerWidth;
+  const y = (r.top + r.height / 2) / window.innerHeight;
+  confetti(Object.assign({
+    particleCount: 26, spread: 55, startVelocity: 28, origin: { x, y },
+    colors: ['#ff5f9e', '#22c3b6', '#8f7dfb', '#ffc93c', '#0033a0']
+  }, opts));
+}
+
+/* Audio Player */
+const musicBtn = document.getElementById('musicBtn');
+let playerStarted = false;
+let musicMuted = false;
+
+function ensurePlayer(){
+  if (playerStarted) return;
+  playerStarted = true;
+  const wrap = document.getElementById('ytWrap');
+  const iframe = document.createElement('iframe');
+  iframe.id = 'ytPlayer';
+  iframe.src = `https://www.youtube.com/embed/${YOUTUBE_VIDEO_ID}?autoplay=1&mute=0&start=31&loop=1&playlist=${YOUTUBE_VIDEO_ID}&controls=0&enablejsapi=1&playsinline=1`;
+  iframe.allow = 'autoplay; encrypted-media';
+  wrap.appendChild(iframe);
+  musicBtn.classList.add('playing');
+}
+
+function ytCommand(func){
+  const iframe = document.getElementById('ytPlayer');
+  if (!iframe || !iframe.contentWindow) return;
+  iframe.contentWindow.postMessage(JSON.stringify({ event: 'command', func, args: [] }), '*');
+}
+
+function updateMusicBtn(){
+  musicBtn.textContent = musicMuted ? '🔇' : '🔊';
+  musicBtn.setAttribute('aria-label', musicMuted ? 'Unmute music' : 'Mute music');
+}
+
+musicBtn.addEventListener('click', () => {
+  if (!playerStarted) { ensurePlayer(); return; }
+  musicMuted = !musicMuted;
+  ytCommand(musicMuted ? 'mute' : 'unMute');
+  musicBtn.classList.toggle('playing', !musicMuted);
+  updateMusicBtn();
+});
+
+/* Candle */
+const candleBtn = document.getElementById('candleBtn');
+const candleHint = document.getElementById('candleHint');
+const revealBlock = document.getElementById('revealBlock');
+
+candleBtn.addEventListener('click', () => {
+  ensurePlayer();
+  if (candleBtn.classList.contains('blown')) return;
+  candleBtn.classList.add('blown');
+  candleHint.classList.add('hide');
+  confettiAt(candleBtn, { particleCount: 65, spread: 80 });
+  setTimeout(() => revealBlock.classList.add('show'), 350);
+});
+
+/* Gift Boxes */
+const giftBtns = document.querySelectorAll('.gift-btn');
+const giftHint = document.getElementById('giftHint');
+const notes = document.getElementById('notes');
+const finalCard = document.getElementById('finalCard');
+let openedCount = 0;
+
+giftBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.classList.contains('opened')) return;
+    btn.classList.add('opened');
+    openedCount++;
+    confettiAt(btn, { particleCount: 22, spread: 55, scalar: .75 });
+
+    const line = document.createElement('p');
+    line.className = 'note-line';
+    line.textContent = btn.dataset.msg;
+    notes.appendChild(line);
+
+    const left = giftBtns.length - openedCount;
+    giftHint.textContent = left > 0 ? `${left} gift${left === 1 ? '' : 's'} left` : 'All gifts opened! 🎁';
+
+    if (openedCount === giftBtns.length) {
+      setTimeout(() => {
+        finalCard.style.display = 'block';
+        if (!reduceMotion) {
+          confetti({ 
+            particleCount: 140, spread: 100, origin: { y: 0.5 },
+            colors: ['#ff5f9e', '#22c3b6', '#8f7dfb', '#ffc93c', '#0033a0'] 
+          });
+        }
+        finalCard.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+      }, 500);
+    }
+  });
+});
+
+/* =====================================================================
+   LIGHTBOX MODAL LOGIC
+   ===================================================================== */
+const polaroids = document.querySelectorAll('.polaroid');
+const lightboxModal = document.getElementById('lightboxModal');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxCaption = document.getElementById('lightboxCaption');
+const lightboxClose = document.getElementById('lightboxClose');
+const lightboxPrev = document.getElementById('lightboxPrev');
+const lightboxNext = document.getElementById('lightboxNext');
+let currentImgIndex = 0;
+
+const galleryData = Array.from(polaroids).map(p => ({
+  src: p.querySelector('img').src,
+  caption: p.querySelector('.polaroid-caption').textContent
+}));
+
+function openLightbox(index) {
+  currentImgIndex = index;
+  updateLightbox();
+  lightboxModal.classList.add('active');
+  document.body.style.overflow = 'hidden'; // prevent background scrolling
+}
+
+function updateLightbox() {
+  const item = galleryData[currentImgIndex];
+  lightboxImg.src = item.src;
+  lightboxCaption.textContent = item.caption;
+}
+
+function closeLightbox() {
+  lightboxModal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function nextLightbox() {
+  currentImgIndex = (currentImgIndex + 1) % galleryData.length;
+  updateLightbox();
+}
+
+function prevLightbox() {
+  currentImgIndex = (currentImgIndex - 1 + galleryData.length) % galleryData.length;
+  updateLightbox();
+}
+
+polaroids.forEach((card, index) => {
+  card.addEventListener('click', () => openLightbox(index));
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openLightbox(index);
+    }
+  });
+});
+
+lightboxClose.addEventListener('click', closeLightbox);
+lightboxNext.addEventListener('click', nextLightbox);
+lightboxPrev.addEventListener('click', prevLightbox);
+
+// Close on backdrop click
+lightboxModal.addEventListener('click', (e) => {
+  if (e.target === lightboxModal) closeLightbox();
+});
+
+// Keyboard Navigation
+window.addEventListener('keydown', (e) => {
+  if (!lightboxModal.classList.contains('active')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowRight') nextLightbox();
+  if (e.key === 'ArrowLeft') prevLightbox();
+});
+
+/* Replay */
+document.getElementById('replayBtn').addEventListener('click', () => {
+  candleBtn.classList.remove('blown');
+  candleHint.classList.remove('hide');
+  revealBlock.classList.remove('show');
+  giftBtns.forEach(b => b.classList.remove('opened'));
+  notes.innerHTML = '';
+  finalCard.style.display = 'none';
+  openedCount = 0;
+  giftHint.textContent = '4 gifts left to open';
+  window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+});
+</script>
+
+</body>
+</html>
