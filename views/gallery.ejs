@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Happy Birthday, My Love! 🎉</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&family=Playfair+Display:ital,wght@0,700;1,600&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% 10%, #fff0f5 0%, #fce4ec 60%, #f8bbd0 100%);
+      font-family: 'Quicksand', sans-serif;
+      color: #3e2723;
+      padding: 40px 16px 80px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Floating Balloons & Sparkles */
+    .ambient-sky {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .balloon {
+      position: absolute;
+      bottom: -100px;
+      width: 42px;
+      height: 52px;
+      border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+      animation: riseBalloon linear infinite;
+      opacity: 0.75;
+    }
+    .balloon::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 15px;
+      background: rgba(0,0,0,0.25);
+    }
+    @keyframes riseBalloon {
+      0% { transform: translateY(0) translateX(0); opacity: 0; }
+      10% { opacity: 0.75; }
+      90% { opacity: 0.75; }
+      100% { transform: translateY(-115vh) translateX(40px); opacity: 0; }
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 45px;
+      animation: fadeInDown 1.2s ease;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.3rem, 6vw, 3.8rem);
+      color: #880e4f;
+      margin-bottom: 8px;
+    }
+    p.subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: #ad1457;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    /* Audio Player Pill */
+    .music-bar {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 99;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 12px 22px;
+      border-radius: 999px;
+      box-shadow: 0 10px 30px rgba(136, 14, 79, 0.25);
+      border: 1px solid rgba(244, 143, 177, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .music-bar:hover { transform: scale(1.05); }
+    .music-icon {
+      width: 32px;
+      height: 32px;
+      background: #e91e63;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      animation: pulseMusic 1.5s infinite;
+    }
+    @keyframes pulseMusic {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    /* Polaroids Layout */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 24px;
+      align-items: center;
+    }
+
+    .polaroid {
+      background: #ffffff;
+      padding: 14px 14px 22px;
+      border-radius: 6px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
+      position: relative;
+    }
+    .polaroid:hover {
+      transform: translateY(-8px) scale(1.02) rotate(0deg) !important;
+      box-shadow: 0 20px 45px rgba(136, 14, 79, 0.22);
+      z-index: 10;
+    }
+    .polaroid img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 4px;
+      display: block;
+    }
+    .caption {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #4e342e;
+      text-align: center;
+      margin-top: 14px;
+    }
+
+    /* Card Placements */
+    .card-couple {
+      grid-column: span 6;
+      transform: rotate(-2deg);
+    }
+    .card-couple .img-wrap { height: 380px; }
+
+    .card-her-large {
+      grid-column: span 6;
+      transform: rotate(2.5deg);
+    }
+    .card-her-large .img-wrap { height: 380px; }
+
+    .card-small-1 {
+      grid-column: span 4;
+      transform: rotate(1.5deg);
+    }
+    .card-small-1 .img-wrap { height: 260px; }
+
+    .card-small-2 {
+      grid-column: span 4;
+      transform: rotate(-2.5deg);
+    }
+    .card-small-2 .img-wrap { height: 260px; }
+
+    .card-small-3 {
+      grid-column: span 4;
+      transform: rotate(2deg);
+    }
+    .card-small-3 .img-wrap { height: 260px; }
+
+    /* Hidden YouTube frame */
+    #ytPlayer {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .card-couple, .card-her-large { grid-column: span 12; }
+      .card-small-1, .card-small-2, .card-small-3 { grid-column: span 12; }
+      .card-couple .img-wrap, .card-her-large .img-wrap { height: 320px; }
+      .card-small-1 .img-wrap, .card-small-2 .img-wrap, .card-small-3 .img-wrap { height: 280px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-sky" id="sky"></div>
+
+  <!-- Hidden YouTube Video Player -->
+  <div id="ytPlayer"></div>
+
+  <!-- Floating Audio Status / Toggle -->
+  <div class="music-bar" id="musicBar" title="Click to play/pause">
+    <div class="music-icon" id="musicIcon">🎵</div>
+    <span style="font-weight: 600; font-size: 0.95rem;" id="musicStatus">Playing Our Song</span>
+  </div>
+
+  <div class="container">
+    <header>
+      <h1>Happy Birthday, Gorgeous! 🎂</h1>
+      <p class="subtitle">Every second with you is a gift I treasure</p>
+    </header>
+
+    <main class="gallery-grid">
+      <!-- 1: Couple Photo -->
+      <div class="polaroid card-couple">
+        <div class="img-wrap">
+          <img src="https://res.cloudinary.com/dkd2ekmmf/image/upload/v1788799175/WhatsApp_Image_2026-09-07_at_8.11.14_PM_ausqpx.jpg" alt="Us Together" id="coupleImg">
+        </div>
+        <p class="caption">With you, everything feels like home ✨</p>
+      </div>
+
+      <!-- 2: Her Large Photo -->
+      <div class="polaroid card-her-large">
+        <div class="img-wrap">
+          <img src="https://res.cloudinary.com/dkd2ekmmf/image/upload/v1788799791/Screenshot_2026-09-07_221904_sfnyrf.png" alt="Her Portrait" id="herLargeImg">
+        </div>
+        <p class="caption">The prettiest smile in the universe 💫</p>
+      </div>
+
+      <!-- 3: Her Small Photo 1 -->
+      <div class="polaroid card-small-1">
+        <div class="img-wrap">
+          <img src="https://res.cloudinary.com/dkd2ekmmf/image/upload/v1788799791/Screenshot_2026-09-07_221250_v0wlhb.png" alt="Cute Moment" id="herSmall1">
+        </div>
+        <p class="caption">Pure sunshine ☀️</p>
+      </div>
+
+      <!-- 4: Her Small Photo 2 -->
+      <div class="polaroid card-small-2">
+        <div class="img-wrap">
+          <img src="https://res.cloudinary.com/dkd2ekmmf/image/upload/v1788799175/s3_xuvuo4.jpg" alt="Happy Moment" id="herSmall2">
+        </div>
+        <p class="caption">Laughter looks so good on you 💕</p>
+      </div>
+
+      <!-- 5: Her Small Photo 3 -->
+      <div class="polaroid card-small-3">
+        <div class="img-wrap">
+          <img src="https://res.cloudinary.com/dkd2ekmmf/image/upload/v1788799175/s2_abi4iw.jpg" alt="Cherished Moment" id="herSmall3">
+        </div>
+        <p class="caption">Here is to many more dreams together 🥂</p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    /* ==========================================================
+       🎵 MUSIC CONFIGURATION (EDIT THESE TWO VARIABLES)
+       ========================================================== */
+    // Change this to any YouTube Video ID (e.g., from https://www.youtube.com/watch?v=kJQP7kiw5Fk it is 'kJQP7kiw5Fk')
+    const YOUTUBE_VIDEO_ID = "JTIue_hyBgk"; 
+    
+    // Change this to the exact starting second you want (e.g., 30 for 30 seconds in)
+    const PLAY_TIME = 25; 
+    /* ========================================================== */
+
+    let player;
+    let isPlaying = false;
+
+    // Load YouTube IFrame Player API
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('ytPlayer', {
+        height: '1',
+        width: '1',
+        videoId: YOUTUBE_VIDEO_ID,
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          start: PLAY_TIME,
+          loop: 1,
+          playlist: YOUTUBE_VIDEO_ID
+        },
+        events: {
+          onReady: (e) => {
+            e.target.seekTo(PLAY_TIME);
+            e.target.playVideo();
+            isPlaying = true;
+            updateStatusText();
+          },
+          onError: (err) => {
+            console.log("Audio playback notice:", err);
+          }
+        }
+      });
+    }
+
+    // Toggle Play/Pause on Pill Click
+    const musicBar = document.getElementById('musicBar');
+    const musicStatus = document.getElementById('musicStatus');
+    const musicIcon = document.getElementById('musicIcon');
+
+    function updateStatusText() {
+      if (isPlaying) {
+        musicStatus.textContent = "Playing Our Song 🎵";
+        musicIcon.textContent = "⏸";
+      } else {
+        musicStatus.textContent = "Play Our Song 🎵";
+        musicIcon.textContent = "▶";
+      }
+    }
+
+    musicBar.addEventListener('click', () => {
+      if (!player) return;
+      if (isPlaying) {
+        player.pauseVideo();
+        isPlaying = false;
+      } else {
+        player.playVideo();
+        isPlaying = true;
+      }
+      updateStatusText();
+    });
+
+    // Ambient floating balloons
+    const sky = document.getElementById('sky');
+    const balloonColors = ['#f48fb1', '#f06292', '#ff8a80', '#ffd54f', '#ce93d8'];
+    function spawnBalloon() {
+      const b = document.createElement('div');
+      b.className = 'balloon';
+      b.style.left = Math.random() * 95 + 'vw';
+      b.style.backgroundColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+      b.style.animationDuration = (8 + Math.random() * 6) + 's';
+      sky.appendChild(b);
+      setTimeout(() => b.remove(), 15000);
+    }
+    for (let i = 0; i < 5; i++) setTimeout(spawnBalloon, i * 700);
+    setInterval(spawnBalloon, 1400);
+  </script>
+</body>
+</html>

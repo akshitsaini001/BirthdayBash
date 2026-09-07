@@ -1,419 +1,416 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You 💕</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --cream:#fdf4ec;
-    --blush:#f9dade;
-    --pink:#f2a9bb;
-    --pastel-red:#e8899a;
-    --rose-deep:#d66b81;
-    --gold:#d8ab6f;
-    --gold-bright:#f0cd94;
-    --wood-light:#a8703f;
-    --wood-mid:#8a5a34;
-    --wood-dark:#6b4226;
-    --text-ink:#5a3b3f;
-  }
-
-  *{margin:0;padding:0;box-sizing:border-box;}
-
-  html,body{
-    height:100%;
-    overflow:hidden;
-    font-family:'Cormorant Garamond', serif;
-  }
-
-  .stage{
-    position:relative;
-    width:100vw;
-    height:100vh;
-    background:
-      radial-gradient(ellipse at 30% 15%, rgba(242,169,187,0.35), transparent 55%),
-      radial-gradient(ellipse at 80% 80%, rgba(216,171,111,0.25), transparent 50%),
-      linear-gradient(160deg, #fdf1e7 0%, #fbe4e3 45%, #f7d6da 100%);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    perspective:1800px;
-    overflow:hidden;
-  }
-
-  /* soft dreamy bokeh */
-  .bokeh{ position:absolute; inset:0; pointer-events:none; }
-  .bokeh span{
-    position:absolute;
-    border-radius:50%;
-    background:radial-gradient(circle, rgba(255,255,255,0.9), rgba(240,205,148,0.15) 60%, transparent 75%);
-    filter:blur(1px);
-    animation: float-bokeh 9s ease-in-out infinite;
-    opacity:0.7;
-  }
-  @keyframes float-bokeh{
-    0%,100%{ transform:translateY(0) scale(1); }
-    50%{ transform:translateY(-22px) scale(1.08); }
-  }
-
-  /* floating ambient hearts, continuous */
-  .hearts-field{ position:absolute; inset:0; pointer-events:none; z-index:2; }
-  .heart{
-    position:absolute;
-    bottom:-40px;
-    font-size:1.1rem;
-    color:var(--pink);
-    opacity:0;
-    animation: rise-heart linear infinite;
-    text-shadow:0 0 8px rgba(242,169,187,0.6);
-  }
-  @keyframes rise-heart{
-    0%{ opacity:0; transform:translateY(0) translateX(0) rotate(0deg); }
-    10%{ opacity:0.85; }
-    90%{ opacity:0.6; }
-    100%{ opacity:0; transform:translateY(-100vh) translateX(var(--drift,20px)) rotate(20deg); }
-  }
-
-  /* warm glow revealed once gate opens */
-  .warmth{
-    position:absolute;
-    left:50%; top:48%;
-    width:110vmax; height:110vmax;
-    transform:translate(-50%,-50%);
-    background:radial-gradient(circle, rgba(240,205,148,0.55) 0%, rgba(242,169,187,0.22) 20%, transparent 48%);
-    opacity:0;
-    transition:opacity 2s ease 1.4s;
-    pointer-events:none;
-    z-index:1;
-  }
-  .stage.opened .warmth{ opacity:1; }
-
-  /* ===== GATE ===== */
-  .gate-wrap{
-    position:relative;
-    width:min(80vw, 660px);
-    height:min(84vh, 700px);
-    z-index:3;
-  }
-
-  .gate{
-    position:relative;
-    width:100%;
-    height:100%;
-    display:flex;
-    border-radius:180px 180px 8px 8px;
-    overflow:visible;
-  }
-
-  .leaf{
-    position:relative;
-    width:50%;
-    height:100%;
-    background:
-      repeating-linear-gradient(90deg, var(--wood-mid) 0px, var(--wood-light) 6px, var(--wood-mid) 12px),
-      linear-gradient(180deg, var(--wood-light), var(--wood-dark));
-    box-shadow:
-      inset 0 0 0 6px rgba(107,66,38,0.5),
-      inset 0 0 40px rgba(0,0,0,0.25);
-    transition: transform 1.7s cubic-bezier(.68,-0.15,.24,1);
-    transform-style:preserve-3d;
-    border:2px solid var(--wood-dark);
-  }
-  .leaf.left{
-    transform-origin:left center;
-    border-right:none;
-    border-radius:180px 0 0 8px;
-  }
-  .leaf.right{
-    transform-origin:right center;
-    border-left:none;
-    border-radius:0 180px 8px 0;
-  }
-  .stage.opened .leaf.left{ transform:rotateY(-110deg); }
-  .stage.opened .leaf.right{ transform:rotateY(110deg); }
-
-  /* carved panel lines */
-  .leaf::before{
-    content:'';
-    position:absolute;
-    inset:20px;
-    border:2px solid rgba(240,205,148,0.5);
-    border-radius:140px 140px 4px 4px;
-  }
-
-  /* glowing heart clasp centered on the gate */
-  .clasp{
-    position:absolute;
-    top:50%; left:50%;
-    width:56px; height:56px;
-    transform:translate(-50%,-50%);
-    z-index:6;
-    transition:opacity .5s ease, transform .8s ease;
-  }
-  .clasp svg{ width:100%; height:100%; filter:drop-shadow(0 0 12px rgba(240,205,148,0.85)); }
-  .stage.opened .clasp{ opacity:0; transform:translate(-50%,-50%) scale(0.4); }
-
-  /* floral garland across the top */
-  .garland{
-    position:absolute;
-    top:-26px; left:50%;
-    transform:translateX(-50%);
-    width:104%;
-    height:60px;
-    z-index:5;
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-end;
-    padding:0 2%;
-  }
-  .garland svg{ width:100%; height:100%; }
-
-  /* teddy bears flanking the gate */
-  .teddy{
-    position:absolute;
-    bottom:-6px;
-    width:78px; height:78px;
-    z-index:5;
-    filter:drop-shadow(0 6px 10px rgba(107,66,38,0.25));
-  }
-  .teddy.left-bear{ left:-38px; }
-  .teddy.right-bear{ right:-38px; }
-  .teddy svg{ width:100%; height:100%; }
-
-  /* fade decorative gate elements once opened */
-  .stage.opened .garland,
-  .stage.opened .teddy{
-    opacity:0;
-    transition:opacity .8s ease;
-  }
-
-  /* ===== CONTENT ===== */
-  .content{
-    position:absolute;
-    left:50%; top:52%;
-    transform:translate(-50%,-50%);
-    text-align:center;
-    width:min(90vw, 640px);
-    z-index:4;
-    padding:0 20px;
-  }
-
-  .message{
-    font-family:'Playfair Display', serif;
-    font-style:italic;
-    font-weight:600;
-    color:var(--text-ink);
-    font-size:clamp(1.7rem, 4.6vw, 2.9rem);
-    line-height:1.35;
-    text-shadow:0 0 24px rgba(240,205,148,0.55), 0 0 44px rgba(242,169,187,0.35);
-    opacity:0;
-  }
-  .stage.opened .message{
-    animation: rise 1.4s ease forwards;
-    animation-delay:2.4s;
-  }
-  @keyframes rise{
-    from{ opacity:0; transform:translateY(16px); }
-    to{ opacity:1; transform:translateY(0); }
-  }
-
-  .message .accent{ color:var(--rose-deep); }
-
-  .cta{
-    margin-top:42px;
-    opacity:0;
-    transform:translateY(10px) scale(0.96);
-  }
-  .stage.opened .cta{
-    animation: rise 1.1s ease forwards;
-    animation-delay:3.6s;
-  }
-
-  .cta button{
-    font-family:'Quicksand', sans-serif;
-    font-weight:700;
-    font-size:1.05rem;
-    letter-spacing:0.06em;
-    color:#6b3a44;
-    background:linear-gradient(135deg, var(--gold-bright), var(--pink) 65%, var(--pastel-red));
-    border:none;
-    padding:16px 42px;
-    border-radius:999px;
-    cursor:pointer;
-    box-shadow:0 6px 22px rgba(232,137,154,0.4), 0 0 0 1px rgba(255,255,255,0.6) inset;
-    position:relative;
-    transition:transform .35s ease, box-shadow .35s ease;
-    animation: pulse 2.2s ease-in-out infinite;
-  }
-  .cta button:hover{
-    transform:translateY(-3px);
-    box-shadow:0 10px 28px rgba(232,137,154,0.55), 0 0 0 1px rgba(255,255,255,0.75) inset;
-  }
-  .cta button:focus-visible{
-    outline:2px solid var(--rose-deep);
-    outline-offset:4px;
-  }
-  @keyframes pulse{
-    0%,100%{ box-shadow:0 6px 22px rgba(232,137,154,0.4), 0 0 0 1px rgba(255,255,255,0.6) inset; transform:scale(1); }
-    50%{ box-shadow:0 6px 30px rgba(232,137,154,0.65), 0 0 0 1px rgba(255,255,255,0.8) inset; transform:scale(1.035); }
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .leaf, .message, .cta, .clasp, .warmth, .heart, .bokeh span, .cta button, .garland, .teddy{
-      animation:none !important;
-      transition:none !important;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For You 💕</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream: #fdf6f0;
+      --blush: #fce4ec;
+      --pink: #f48fb1;
+      --pastel-red: #e57373;
+      --rose-deep: #c2185b;
+      --gold: #d4af37;
+      --gold-bright: #ffe082;
+      --wood-light: #9c6644;
+      --wood-mid: #7f4f24;
+      --wood-dark: #582f0e;
+      --text-ink: #4a282d;
     }
-    .stage.opened .leaf.left{ transform:rotateY(-110deg); }
-    .stage.opened .leaf.right{ transform:rotateY(110deg); }
-    .stage.opened .message, .stage.opened .cta{ opacity:1; transform:none; }
-  }
 
-  @media (max-width:520px){
-    .gate-wrap{ width:88vw; height:76vh; }
-    .cta button{ padding:14px 32px; font-size:0.95rem; }
-    .teddy{ width:52px; height:52px; }
-    .teddy.left-bear{ left:-22px; }
-    .teddy.right-bear{ right:-22px; }
-  }
-</style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #1a0b10;
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .stage {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at 50% 30%, #ffebee 0%, #ffd1dc 45%, #f8bbd0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1600px;
+      overflow: hidden;
+    }
+
+    /* Ambient Glow & Sparkles */
+    .warmth {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(255, 235, 179, 0.45) 0%, rgba(244, 143, 177, 0.2) 50%, transparent 80%);
+      opacity: 0;
+      transition: opacity 2.5s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .stage.opened .warmth { opacity: 1; }
+
+    .bokeh, .hearts-field {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .bokeh span {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.9), rgba(255, 224, 130, 0.3) 60%, transparent 70%);
+      filter: blur(2px);
+      animation: float-bokeh 8s ease-in-out infinite alternate;
+    }
+    @keyframes float-bokeh {
+      0% { transform: translateY(0) scale(0.9); opacity: 0.3; }
+      100% { transform: translateY(-30px) scale(1.15); opacity: 0.8; }
+    }
+
+    .heart-particle {
+      position: absolute;
+      bottom: -40px;
+      font-size: 1.1rem;
+      color: var(--pink);
+      opacity: 0;
+      animation: float-heart linear infinite;
+      text-shadow: 0 0 10px rgba(244, 143, 177, 0.8);
+      user-select: none;
+    }
+    @keyframes float-heart {
+      0% { transform: translateY(0) scale(0.6) rotate(0deg); opacity: 0; }
+      15% { opacity: 0.8; }
+      90% { opacity: 0.8; }
+      100% { transform: translateY(-110vh) scale(1.2) rotate(35deg); opacity: 0; }
+    }
+
+    /* 3D Arch & Wooden Gate */
+    .gate-wrap {
+      position: relative;
+      width: min(88vw, 560px);
+      height: min(80vh, 680px);
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s ease;
+    }
+
+    /* CRITICAL FIX: Pass clicks straight through opened doors & frame */
+    .stage.opened .gate-wrap,
+    .stage.opened .gate-wrap * {
+      pointer-events: none !important;
+    }
+
+    .arch-frame {
+      position: absolute;
+      inset: -14px;
+      border: 8px solid rgba(255, 255, 255, 0.4);
+      border-radius: 280px 280px 16px 16px;
+      box-shadow: 0 12px 35px rgba(88, 47, 14, 0.25), inset 0 0 20px rgba(255,255,255,0.3);
+      pointer-events: none;
+      z-index: 7;
+    }
+
+    .gate {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      border-radius: 260px 260px 12px 12px;
+      transform-style: preserve-3d;
+    }
+
+    .leaf {
+      position: relative;
+      width: 50%;
+      height: 100%;
+      background: repeating-linear-gradient(90deg, #7f4f24 0px, #9c6644 14px, #6f3e1b 28px);
+      box-shadow: inset 0 0 25px rgba(0,0,0,0.5), 0 8px 24px rgba(0,0,0,0.25);
+      border: 3px solid #582f0e;
+      transition: transform 2.2s cubic-bezier(0.65, 0, 0.15, 1);
+      transform-style: preserve-3d;
+    }
+    .leaf.left {
+      transform-origin: left center;
+      border-radius: 260px 0 0 12px;
+      border-right: 1.5px solid rgba(0,0,0,0.3);
+    }
+    .leaf.right {
+      transform-origin: right center;
+      border-radius: 0 260px 12px 0;
+      border-left: 1.5px solid rgba(0,0,0,0.3);
+    }
+
+    .leaf::after {
+      content: '';
+      position: absolute;
+      inset: 16px;
+      border: 2px dashed rgba(255, 224, 130, 0.45);
+      border-radius: 240px 0 0 8px;
+    }
+    .leaf.right::after { border-radius: 0 240px 8px 0; }
+
+    .stage.opened .leaf.left { transform: rotateY(-115deg); }
+    .stage.opened .leaf.right { transform: rotateY(115deg); }
+
+    /* Clasp */
+    .clasp {
+      position: absolute;
+      top: 52%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 64px;
+      height: 64px;
+      z-index: 10;
+      cursor: pointer;
+      transition: opacity 0.6s ease, transform 0.8s ease;
+      animation: float-clasp 2s ease-in-out infinite alternate;
+    }
+    @keyframes float-clasp {
+      from { transform: translate(-50%, -50%) scale(1); }
+      to { transform: translate(-50%, -54%) scale(1.05); }
+    }
+    .clasp svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 14px rgba(255, 224, 130, 0.9));
+    }
+    .stage.opened .clasp {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.2);
+      pointer-events: none !important;
+    }
+
+    /* Garland */
+    .garland {
+      position: absolute;
+      top: -24px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 106%;
+      height: 60px;
+      z-index: 8;
+      pointer-events: none;
+      transition: opacity 1s ease 0.5s;
+    }
+    .stage.opened .garland { opacity: 0; }
+
+    /* Center Content — Brought to top layer */
+    .content {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min(85vw, 540px);
+      text-align: center;
+      z-index: 30; /* Elevated above all gate layers */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      pointer-events: auto;
+    }
+
+    .tagline {
+      font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rose-deep);
+      font-family: 'Quicksand', sans-serif;
+      margin-bottom: 12px;
+      opacity: 0;
+    }
+
+    .message {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.3;
+      color: var(--text-ink);
+      text-shadow: 0 4px 18px rgba(255, 255, 255, 0.7);
+      opacity: 0;
+    }
+    .message span { color: var(--rose-deep); font-weight: 700; }
+
+    .stage.opened .tagline {
+      animation: fadeInUp 1.2s ease forwards 1.8s;
+    }
+    .stage.opened .message {
+      animation: fadeInUp 1.4s ease forwards 2.2s;
+    }
+
+    .cta {
+      margin-top: 36px;
+      opacity: 0;
+      position: relative;
+      z-index: 40;
+    }
+    .stage.opened .cta {
+      animation: fadeInUp 1s ease forwards 3s;
+    }
+
+    .cta-btn {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #f48fb1, #e57373, #d4af37);
+      border: none;
+      padding: 16px 44px;
+      border-radius: 999px;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(229, 115, 115, 0.45);
+      transition: all 0.35s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      position: relative;
+      z-index: 50;
+      pointer-events: auto !important;
+      user-select: none;
+    }
+    .cta-btn:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 14px 30px rgba(229, 115, 115, 0.6);
+    }
+    .cta-btn:active {
+      transform: translateY(-1px) scale(0.99);
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .gate-wrap { width: 90vw; height: 75vh; }
+      .arch-frame { inset: -8px; border-width: 5px; }
+      .leaf::after { inset: 10px; }
+    }
+  </style>
 </head>
 <body>
 
 <div class="stage" id="stage">
+  <div class="warmth"></div>
   <div class="bokeh" id="bokeh"></div>
   <div class="hearts-field" id="heartsField"></div>
-  <div class="warmth"></div>
 
+  <!-- Decorative Gateway -->
   <div class="gate-wrap">
+    <div class="arch-frame"></div>
     <div class="gate">
       <div class="leaf left"></div>
       <div class="leaf right"></div>
 
-      <div class="clasp">
+      <div class="clasp" id="clasp" title="Click to open">
         <svg viewBox="0 0 100 100">
-          <path d="M50 84 C22 63, 9 44, 9 27 C9 13, 23 4, 35 10 C43 14, 49 20, 50 27 C51 20, 57 14, 65 10 C77 4, 91 13, 91 27 C91 44, 78 63, 50 84 Z"
-                fill="#f0cd94" stroke="#d8ab6f" stroke-width="2"/>
+          <path d="M50 86 C20 62, 5 44, 5 26 C5 12, 19 3, 33 8 C42 12, 48 18, 50 25 C52 18, 58 12, 67 8 C81 3, 95 12, 95 26 C95 44, 80 62, 50 86 Z"
+                fill="url(#goldGrad)" stroke="#f5d77f" stroke-width="3"/>
+          <defs>
+            <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#ffe082"/>
+              <stop offset="50%" stop-color="#d4af37"/>
+              <stop offset="100%" stop-color="#aa7c11"/>
+            </linearGradient>
+          </defs>
         </svg>
       </div>
 
-      <!-- floral garland -->
+      <!-- Garland SVG -->
       <div class="garland">
-        <svg viewBox="0 0 640 60" preserveAspectRatio="none">
-          <path d="M0,10 Q160,55 320,15 Q480,-20 640,10" fill="none" stroke="#8aa06b" stroke-width="3"/>
-          <g fill="#9fc082">
-            <ellipse cx="60" cy="24" rx="9" ry="4" transform="rotate(20 60 24)"/>
-            <ellipse cx="160" cy="40" rx="9" ry="4" transform="rotate(-15 160 40)"/>
-            <ellipse cx="260" cy="18" rx="9" ry="4" transform="rotate(25 260 18)"/>
-            <ellipse cx="380" cy="12" rx="9" ry="4" transform="rotate(-20 380 12)"/>
-            <ellipse cx="480" cy="30" rx="9" ry="4" transform="rotate(15 480 30)"/>
-            <ellipse cx="580" cy="20" rx="9" ry="4" transform="rotate(-10 580 20)"/>
+        <svg viewBox="0 0 600 60" preserveAspectRatio="none" style="width:100%; height:100%;">
+          <path d="M 0 10 Q 150 45, 300 20 Q 450 -5, 600 15" fill="none" stroke="#688a50" stroke-width="4"/>
+          <g fill="#e57373">
+            <circle cx="100" cy="22" r="7"/>
+            <circle cx="200" cy="25" r="8"/>
+            <circle cx="300" cy="18" r="9"/>
+            <circle cx="410" cy="12" r="8"/>
+            <circle cx="510" cy="22" r="7"/>
           </g>
-          <g>
-            <circle cx="100" cy="28" r="7" fill="#f2a9bb"/>
-            <circle cx="100" cy="28" r="2.5" fill="#f0cd94"/>
-            <circle cx="200" cy="22" r="6" fill="#fdf4ec"/>
-            <circle cx="200" cy="22" r="2.2" fill="#e8899a"/>
-            <circle cx="320" cy="14" r="7.5" fill="#e8899a"/>
-            <circle cx="320" cy="14" r="2.6" fill="#fdf4ec"/>
-            <circle cx="440" cy="16" r="6" fill="#f2a9bb"/>
-            <circle cx="440" cy="16" r="2.2" fill="#f0cd94"/>
-            <circle cx="540" cy="26" r="6.5" fill="#fdf4ec"/>
-            <circle cx="540" cy="26" r="2.3" fill="#e8899a"/>
+          <g fill="#ffe082">
+            <circle cx="100" cy="22" r="3"/>
+            <circle cx="200" cy="25" r="3.5"/>
+            <circle cx="300" cy="18" r="3.5"/>
+            <circle cx="410" cy="12" r="3"/>
+            <circle cx="510" cy="22" r="3"/>
           </g>
-        </svg>
-      </div>
-
-      <!-- teddy bears -->
-      <div class="teddy left-bear">
-        <svg viewBox="0 0 100 100">
-          <circle cx="24" cy="20" r="12" fill="#c98f5e"/>
-          <circle cx="76" cy="20" r="12" fill="#c98f5e"/>
-          <circle cx="24" cy="20" r="6" fill="#e8b98c"/>
-          <circle cx="76" cy="20" r="6" fill="#e8b98c"/>
-          <circle cx="50" cy="45" r="30" fill="#c98f5e"/>
-          <ellipse cx="50" cy="52" rx="16" ry="13" fill="#e8b98c"/>
-          <circle cx="50" cy="48" r="3.4" fill="#5a3b3f"/>
-          <circle cx="38" cy="38" r="3.4" fill="#5a3b3f"/>
-          <circle cx="62" cy="38" r="3.4" fill="#5a3b3f"/>
-          <ellipse cx="50" cy="80" rx="24" ry="18" fill="#c98f5e"/>
-          <path d="M40 78 Q50 88 60 78" fill="none" stroke="#e8899a" stroke-width="4" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div class="teddy right-bear">
-        <svg viewBox="0 0 100 100">
-          <circle cx="24" cy="20" r="12" fill="#c98f5e"/>
-          <circle cx="76" cy="20" r="12" fill="#c98f5e"/>
-          <circle cx="24" cy="20" r="6" fill="#e8b98c"/>
-          <circle cx="76" cy="20" r="6" fill="#e8b98c"/>
-          <circle cx="50" cy="45" r="30" fill="#c98f5e"/>
-          <ellipse cx="50" cy="52" rx="16" ry="13" fill="#e8b98c"/>
-          <circle cx="50" cy="48" r="3.4" fill="#5a3b3f"/>
-          <circle cx="38" cy="38" r="3.4" fill="#5a3b3f"/>
-          <circle cx="62" cy="38" r="3.4" fill="#5a3b3f"/>
-          <ellipse cx="50" cy="80" rx="24" ry="18" fill="#c98f5e"/>
-          <path d="M40 78 Q50 88 60 78" fill="none" stroke="#e8899a" stroke-width="4" stroke-linecap="round"/>
         </svg>
       </div>
     </div>
   </div>
 
+  <!-- Content Revealed Inside -->
   <div class="content">
-    <p class="message">Hey <span class="accent">cutie</span>, there is something for you 💕</p>
+    <p class="tagline">A special surprise</p>
+    <h1 class="message">Hey <span>Beautiful</span>,<br>someone loves you endlessly... ✨</h1>
     <div class="cta">
-      <a href="/message">
-        <button id="enterBtn" type="button">Click me ✨</button>
-      </a>
+      <button class="cta-btn" id="openLetterBtn" type="button">Step Inside 💌</button>
     </div>
   </div>
 </div>
 
 <script>
   const stage = document.getElementById('stage');
+  const clasp = document.getElementById('clasp');
+  const openLetterBtn = document.getElementById('openLetterBtn');
 
-  // dreamy bokeh circles
-  const bokeh = document.getElementById('bokeh');
-  for(let i=0;i<10;i++){
-    const b = document.createElement('span');
-    const size = 20 + Math.random()*50;
-    b.style.width = size+'px';
-    b.style.height = size+'px';
-    b.style.left = Math.random()*100+'%';
-    b.style.top = Math.random()*100+'%';
-    b.style.animationDelay = (Math.random()*5)+'s';
-    b.style.animationDuration = (7+Math.random()*5)+'s';
-    bokeh.appendChild(b);
+  // Bokeh Background Generator
+  const bokehContainer = document.getElementById('bokeh');
+  for (let i = 0; i < 16; i++) {
+    const bubble = document.createElement('span');
+    const size = 20 + Math.random() * 55;
+    bubble.style.width = `${size}px`;
+    bubble.style.height = `${size}px`;
+    bubble.style.left = `${Math.random() * 100}%`;
+    bubble.style.top = `${Math.random() * 100}%`;
+    bubble.style.animationDelay = `${Math.random() * 5}s`;
+    bubble.style.animationDuration = `${6 + Math.random() * 6}s`;
+    bokehContainer.appendChild(bubble);
   }
 
-  // continuous rising hearts
+  // Floating Hearts
   const heartsField = document.getElementById('heartsField');
-  const heartChars = ['💗','💕','♥'];
-  function spawnHeart(){
-    const h = document.createElement('span');
-    h.className = 'heart';
-    h.textContent = heartChars[Math.floor(Math.random()*heartChars.length)];
-    h.style.left = (Math.random()*100)+'%';
-    h.style.setProperty('--drift', (Math.random()*80-40)+'px');
-    h.style.fontSize = (0.8 + Math.random()*1.1)+'rem';
-    h.style.animationDuration = (7+Math.random()*6)+'s';
-    heartsField.appendChild(h);
-    setTimeout(()=>h.remove(), 14000);
+  const icons = ['🌸', '💖', '✨', '💕', '🌷'];
+  function spawnHeart() {
+    const el = document.createElement('span');
+    el.className = 'heart-particle';
+    el.textContent = icons[Math.floor(Math.random() * icons.length)];
+    el.style.left = `${Math.random() * 96}%`;
+    el.style.fontSize = `${0.9 + Math.random() * 1.2}rem`;
+    el.style.animationDuration = `${6 + Math.random() * 5}s`;
+    heartsField.appendChild(el);
+    setTimeout(() => el.remove(), 11000);
   }
-  for(let i=0;i<8;i++) setTimeout(spawnHeart, i*600);
-  setInterval(spawnHeart, 900);
+  for (let i = 0; i < 7; i++) setTimeout(spawnHeart, i * 400);
+  setInterval(spawnHeart, 750);
 
-  // open the gate shortly after load
+  // Gate Opener
+  function openGate() {
+    stage.classList.add('opened');
+  }
+
   window.addEventListener('load', () => {
-    setTimeout(() => stage.classList.add('opened'), 900);
+    setTimeout(openGate, 1200);
   });
+  clasp.addEventListener('click', openGate);
 
-  // proceed to next page on click
-  document.getElementById('enterBtn').addEventListener('click', () => {
-    window.location.href = 'page2.html';
+  // Direct Button Redirection
+  openLetterBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.location.href = '/message';
   });
 </script>
-
 </body>
 </html>
